@@ -112,14 +112,14 @@ int16_t ser_collection(
 {
     serdata_t *data = (serdata_t*)userData;
     corto_type t = corto_value_typeof(info);
-    corto_type elementType = corto_collection(t)->elementType;
+    corto_type element_type = corto_collection(t)->element_type;
 
-    if (!elementType->reference || corto_type_instanceof(ast_Node_o, elementType)) {
+    if (!element_type->reference || corto_type_instanceof(ast_Node_o, element_type)) {
         if (info->kind == CORTO_MEMBER) {
             void *ptr = corto_value_ptrof(info);
             if (corto_ll_count(*(corto_ll*)ptr)) {
                 ser_indent(data);
-                if (elementType->reference) {
+                if (element_type->reference) {
                     corto_buffer_append(&data->b, "%s:\n", corto_idof(info->is.member.member));
                 } else {
                     corto_buffer_append(&data->b, "%s: [", corto_idof(info->is.member.member));
@@ -129,7 +129,7 @@ int16_t ser_collection(
                 corto_walk_elements(s, info, userData);
                 data->indent --;
 
-                if (!elementType->reference) {
+                if (!element_type->reference) {
                     corto_buffer_append(&data->b, "]\n", corto_idof(info->is.member.member));
                 }
             }
