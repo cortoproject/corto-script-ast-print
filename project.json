@@ -5,7 +5,7 @@
         "description": "Making the world a better place",
         "author": "Arthur Dent",
         "version": "1.0.0",
-        "language": "c",
+        "language": null,
         "c4cpp": true,
         "use": ["corto/script/ast", "antlr4/cpp"]
     }
