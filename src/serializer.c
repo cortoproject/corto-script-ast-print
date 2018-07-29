@@ -3,7 +3,7 @@
 typedef struct serdata_t {
     corto_buffer b;
     corto_uint32 indent;
-} print_printData;
+} serdata_t;
 
 static
 void ser_indent(

@@ -6,11 +6,9 @@
 #ifndef CORTO_SCRIPT_AST_PRINT_H
 #define CORTO_SCRIPT_AST_PRINT_H
 
-#include <corto/corto.h>
 #include <corto/script/ast/print/_project.h>
 #include <corto/script/ast/c/c.h>
 #include <corto/c/c.h>
-#include <antlr4/cpp/cpp.h>
 #include <corto/script/ast/ast.h>
 
 /* $header() */

@@ -3,7 +3,6 @@
 #include <corto/script/ast/print/print.h>
 
 
-extern "C"
 int cortomain(int argc, char *argv[]) {
 
     if (argc > 1) {
