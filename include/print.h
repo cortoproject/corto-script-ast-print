@@ -15,6 +15,10 @@
 /* $end */
 
 /* $body() */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 CORTO_SCRIPT_AST_PRINT_EXPORT
 char* cortoscript_ast_to_string(
     ast_Node node);
@@ -27,6 +31,9 @@ CORTO_SCRIPT_AST_PRINT_EXPORT
 char* cortoscript_expr_to_string(
     const char *code);
 
+#ifdef __cplusplus
+}
+#endif
 /* $end */
 
 #endif
