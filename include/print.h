@@ -6,13 +6,19 @@
 #ifndef CORTO_SCRIPT_AST_PRINT_H
 #define CORTO_SCRIPT_AST_PRINT_H
 
-#include <corto/script/ast/print/_project.h>
-#include <corto/script/ast/c/c.h>
-#include <corto/c/c.h>
-#include <corto/script/ast/ast.h>
+#include "bake_config.h"
+
+#define CORTO_SCRIPT_AST_PRINT_ETC ut_locate("corto.script.ast.print", NULL, UT_LOCATE_ETC)
 
 /* $header() */
 /* $end */
+
+#include "_type.h"
+#include "_interface.h"
+#include "_load.h"
+#include "_binding.h"
+
+#include <corto.script.ast.print.c>
 
 /* $body() */
 #ifdef __cplusplus

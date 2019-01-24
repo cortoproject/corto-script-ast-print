@@ -1,11 +1,11 @@
 {
-    "id": "corto/script/ast/print",
+    "id": "corto.script.ast.print",
     "type": "package",
     "value": {
-        "description": "Making the world a better place",
-        "author": "Arthur Dent",
+        "description": "Print AST to console",
+        "author": "Sander Mertens",
         "version": "1.0.0",
-        "language": "c",
-        "use": ["corto/script/ast"]
-    }
+        "use": ["corto.script.ast"]
+    },
+    "corto": { }
 }
