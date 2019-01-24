@@ -1,13 +1,12 @@
 /* This is a managed file. Do not delete this comment. */
 
-#include <corto/script/ast/print/print.h>
-
+#include <corto.script.ast.print>
 
 int cortomain(int argc, char *argv[]) {
 
     if (argc > 1) {
         ast_Node node = NULL;
-        if (corto_file_test(argv[1])) {
+        if (ut_file_test(argv[1])) {
             node = cortoscript_ast_parse_file(argv[1], false);
         } else {
             node = cortoscript_ast_parse(argv[1], false);
@@ -16,11 +15,11 @@ int cortomain(int argc, char *argv[]) {
         if (node) {
             char *str = cortoscript_ast_to_string(node);
             if (str) {
-                corto_log("%s\n", str);
+                ut_log("%s\n", str);
                 free(str);
             }
         } else {
-            corto_throw("failed to parse '%s'", argv[1]);
+            ut_throw("failed to parse '%s'", argv[1]);
             return -1;
         }
     }

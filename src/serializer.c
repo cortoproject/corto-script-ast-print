@@ -1,7 +1,8 @@
-#include <corto/script/ast/print/print.h>
+
+#include <corto.script.ast.print>
 
 typedef struct serdata_t {
-    corto_buffer b;
+    ut_strbuf b;
     corto_uint32 indent;
 } serdata_t;
 
@@ -11,7 +12,7 @@ void ser_indent(
 {
     corto_uint32 indent = data->indent;
     while (indent--) {
-        corto_buffer_append(&data->b, "|   ");
+        ut_strbuf_append(&data->b, "|   ");
     }
 }
 
@@ -53,25 +54,25 @@ int16_t ser_primitive(
     corto_ptr_cast(t, ptr, corto_string_o, &str);
     if (info->kind == CORTO_MEMBER) {
         ser_indent(data);
-        corto_buffer_append(&data->b, "%s: ", corto_idof(info->is.member.member));
+        ut_strbuf_append(&data->b, "%s: ", corto_idof(info->is.member.member));
     } else if (info->kind == CORTO_ELEMENT) {
         if (info->is.element.index) {
-            corto_buffer_append(&data->b, ", ");
+            ut_strbuf_append(&data->b, ", ");
         }
     } else {
         ser_indent(data);
     }
 
-    corto_buffer_appendstr(&data->b, "'");
+    ut_strbuf_appendstr(&data->b, "'");
     if (!strcmp(str, "'")) {
-        corto_buffer_appendstr(&data->b, "\\'");
+        ut_strbuf_appendstr(&data->b, "\\'");
     } else {
-        corto_buffer_appendstr(&data->b, str);
+        ut_strbuf_appendstr(&data->b, str);
     }
-    corto_buffer_appendstr(&data->b, "'");
+    ut_strbuf_appendstr(&data->b, "'");
 
     if (info->kind == CORTO_MEMBER) {
-        corto_buffer_append(&data->b, "\n");
+        ut_strbuf_append(&data->b, "\n");
     }
     corto_dealloc(str);
 
@@ -92,9 +93,9 @@ int16_t ser_ref(
         if (*(corto_object*)ptr) {
             ser_indent(data);
             if (info->kind == CORTO_MEMBER) {
-                corto_buffer_append(&data->b, "%s: ", corto_idof(info->is.member.member));
+                ut_strbuf_append(&data->b, "%s: ", corto_idof(info->is.member.member));
             }
-            corto_buffer_append(&data->b, "%s\n", corto_idof(corto_typeof(*(corto_object*)ptr)));
+            ut_strbuf_append(&data->b, "%s\n", corto_idof(corto_typeof(*(corto_object*)ptr)));
             data->indent ++;
             corto_walk(s, *(corto_object*)ptr, userData);
             data->indent --;
@@ -117,12 +118,12 @@ int16_t ser_collection(
     if (!element_type->reference || corto_type_instanceof(ast_Node_o, element_type)) {
         if (info->kind == CORTO_MEMBER) {
             void *ptr = corto_value_ptrof(info);
-            if (corto_ll_count(*(corto_ll*)ptr)) {
+            if (ut_ll_count(*(ut_ll*)ptr)) {
                 ser_indent(data);
                 if (element_type->reference) {
-                    corto_buffer_append(&data->b, "%s:\n", corto_idof(info->is.member.member));
+                    ut_strbuf_append(&data->b, "%s:\n", corto_idof(info->is.member.member));
                 } else {
-                    corto_buffer_append(&data->b, "%s: [", corto_idof(info->is.member.member));
+                    ut_strbuf_append(&data->b, "%s: [", corto_idof(info->is.member.member));
                 }
 
                 data->indent ++;
@@ -130,7 +131,7 @@ int16_t ser_collection(
                 data->indent --;
 
                 if (!element_type->reference) {
-                    corto_buffer_append(&data->b, "]\n", corto_idof(info->is.member.member));
+                    ut_strbuf_append(&data->b, "]\n", corto_idof(info->is.member.member));
                 }
             }
         }
@@ -143,7 +144,7 @@ char* cortoscript_ast_to_string(
     ast_Node node)
 {
     serdata_t serData;
-    serData.b = CORTO_BUFFER_INIT;
+    serData.b = UT_STRBUF_INIT;
     serData.indent = 0;
     corto_walk_opt s;
     corto_walk_init(&s);
@@ -154,13 +155,13 @@ char* cortoscript_ast_to_string(
     s.reference = ser_ref;
 
     if (!corto_instanceof(ast_Scope_o, node)) {
-        corto_buffer_append(&serData.b, "%s\n", corto_idof(corto_typeof(node)));
+        ut_strbuf_append(&serData.b, "%s\n", corto_idof(corto_typeof(node)));
         serData.indent ++;
     }
 
     corto_value v = corto_value_mem(node, corto_typeof(node));
     corto_walk_value(&s, &v, &serData);
-    return corto_buffer_str(&serData.b);
+    return ut_strbuf_get(&serData.b);
 }
 
 char* cortoscript_code_to_string(
